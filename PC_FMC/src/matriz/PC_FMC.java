@@ -11,7 +11,7 @@ import javax.swing.JFormattedTextField;
 class Matriz{
 	
 	Scanner op = new Scanner(System.in);
-	DecimalFormat duasCasas=new DecimalFormat("###,00");
+	DecimalFormat duasCasas=new DecimalFormat("##,##0.0");
 	private int j, i,n,diagPrinc,diagSecond,sarrus;
 	private int x,y,xb,yb;
 	double laPlace;

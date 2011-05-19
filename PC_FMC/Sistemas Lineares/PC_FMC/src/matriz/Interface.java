@@ -15,6 +15,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
 import java.util.ArrayList;
+import java.util.regex.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -74,7 +75,7 @@ public class Interface extends javax.swing.JFrame {
 
     void setJTextFormattedList(int l, int yC, ArrayList<JFormattedTextField> determinanteParam, JPanel painel) {
         determinanteParam.get(l).setBounds(0, yC, 0, 0);
-        determinanteParam.get(l).setSize(44, 20);
+        determinanteParam.get(l).setSize(55, 20);
         determinanteParam.get(l).setVisible(true);
         determinanteParam.get(l).setEnabled(false);
         painel.add(determinanteParam.get(l));
@@ -96,27 +97,29 @@ public class Interface extends javax.swing.JFrame {
             yC += 40;
         }
     }
-
+//matches("^-?[0-9]+$"))
     void validaJFormattedTextField() {
-        int contValidate = x * y;
+        boolean contValidate=true;
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                if (!jfCampos[i][j].getText().toString().matches("^-?[0-9]+$")) {
+                if (!jfCampos[i][j].getText().toString().matches("[-]?[0-9]+")) {
                     jfCampos[i][j].setBackground(Color.red);
-                    contValidate--;
+                    contValidate=false;
                 } else {
                     jfCampos[i][j].setBackground(Color.white);
                 }
 
             }
         }
-        if (contValidate == x * y) {
+        if (contValidate) {
             mat.setMatriz();
             mat.criarMatrizJTextFieldFormatted(jfCampos);
             mat.clonaMatriz();
             mat.resolveCramer();
             mat.determinantesDeCramer();
             mat.exibeDeterminantesDeCramer();
+            mat.armazenaDeterminanteCramer.add(mat.armazenaDeterminanteCramer.get(0));
+            mat.armazenaDeterminanteCramer.remove(0);
             mat.exibeDeterminantesDeCramerJFormattedTextField(determinante);
             System.out.print("Valores de todas det =>"+mat.armazenaDeterminanteCramer+"\n Um por um=>"+mat.armazenaCramer+"\n");
             System.out.println("Valot TF=> "+determinante.get(0).getText()+" "+determinante.get(1).getText()+" "+determinante.get(2).getText()); 
@@ -128,6 +131,7 @@ public class Interface extends javax.swing.JFrame {
 //            System.out.println("Fora do for=>" +contValidate);
             JOptionPane.showMessageDialog(jbtnGerar, "Campos em vermelho sao obrigatorios", "Alerta!!", JOptionPane.INFORMATION_MESSAGE);
         }
+       
 
     }
 
@@ -176,9 +180,9 @@ public class Interface extends javax.swing.JFrame {
         jlblOrdem.setText("Escolha a ordem da matriz:");
 
         jbtnGerar.setText("Gerar Matriz");
-        jbtnGerar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jbtnGerarMouseClicked(evt);
+        jbtnGerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnGerarActionPerformed(evt);
             }
         });
 
@@ -195,9 +199,9 @@ public class Interface extends javax.swing.JFrame {
 
         jbtnResult.setText("Determinante");
         jbtnResult.setEnabled(false);
-        jbtnResult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jbtnResultMouseClicked(evt);
+        jbtnResult.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnResultActionPerformed(evt);
             }
         });
 
@@ -256,27 +260,6 @@ public class Interface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnGerarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnGerarMouseClicked
-        defineGraficoXY();
-        criaMascara();
-        geraArrayJFormattedTextField();
-        geraArrayListJFormattedTextField();
-        exibeJFormattedTextField();
-        zeraBoundsJFormattedTextField(0);
-        jbtnGerar.setEnabled(false);
-        jbtnResult.setEnabled(true);
-        mat.armazenaCramer.clear();
-        mat.armazenaDeterminanteCramer.clear();
-        
-        System.out.print("\nValores de todas det =>"+mat.armazenaDeterminanteCramer+"\n Um por um=>"+mat.armazenaCramer+"\n");
-        
-    }//GEN-LAST:event_jbtnGerarMouseClicked
-
-    private void jbtnResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnResultMouseClicked
-        validaJFormattedTextField();
-        
-    }//GEN-LAST:event_jbtnResultMouseClicked
-
     private void jcbOrdemItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbOrdemItemStateChanged
         jbtnGerar.setEnabled(true);
         jbtnResult.setEnabled(false);
@@ -286,6 +269,29 @@ public class Interface extends javax.swing.JFrame {
         jPanelResultados.repaint();
 
     }//GEN-LAST:event_jcbOrdemItemStateChanged
+
+    private void jbtnResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnResultActionPerformed
+        validaJFormattedTextField();
+    }//GEN-LAST:event_jbtnResultActionPerformed
+
+    private void jbtnGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGerarActionPerformed
+           defineGraficoXY();
+//        =========================================================================
+        
+
+//        =========================================================================
+        criaMascara();
+        geraArrayJFormattedTextField();
+        geraArrayListJFormattedTextField();
+        exibeJFormattedTextField();
+        zeraBoundsJFormattedTextField(0);
+        jbtnGerar.setEnabled(false);
+        jbtnResult.setEnabled(true);
+        mat.armazenaCramer.clear();
+        mat.armazenaDeterminanteCramer.clear();
+        System.out.print("\nValores de todas det =>"+mat.armazenaDeterminanteCramer+"\n Um por um=>"+mat.armazenaCramer+"\n");
+        
+    }//GEN-LAST:event_jbtnGerarActionPerformed
     /**
      * @param args the command line arguments
      */
