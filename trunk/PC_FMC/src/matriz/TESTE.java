@@ -4,6 +4,7 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.text.NumberFormat;
+import java.util.regex.*;
 
 class Gauss extends Matriz{
 	String ik[][];
@@ -229,13 +230,29 @@ class Gauss extends Matriz{
 
 
 public class TESTE {
-	public static void main(String args[]){
+	public static void main(String args[]){		
 		Scanner op = new Scanner(System.in);
 		Gauss ga=new Gauss();
-		int x=12345;
-		String y="-1x+4y+5+6";
-//		y=y.replaceAll("^-[a-z]+$","");
+////		Pattern pat=new Pattern(Matcher("l"));
+//		int x=12345;
+//		String y="-123456x+-4y+5+-6";
+//		String incognitas[] = new String[2000];
+		//incognitas[0] = y.substring(0,y.indexOf("a-z"));
+		//y=y.replaceAll("[^0-9-]*"," ");
 //		y=y.replace("+","");
-		System.out.println(y);
+//		System.out.println(y.indexOf(""));
+		Pattern padrao = Pattern.compile("Lucas.*");  
+		   Matcher pesquisa = padrao.matcher("Lucas");   
+		  
+		   if (pesquisa.matches())   
+		   {  
+		           System.out.println("Deu");  
+		   }  
+		   else   
+		   {  
+		           System.out.println("NADA");  
+		   }
+		   
+		
 		}
 }
